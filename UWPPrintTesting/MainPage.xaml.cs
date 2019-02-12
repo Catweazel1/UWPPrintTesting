@@ -26,5 +26,10 @@ namespace UWPPrintTesting
         {
             this.InitializeComponent();
         }
+
+        private void OnPrintButtonClick(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

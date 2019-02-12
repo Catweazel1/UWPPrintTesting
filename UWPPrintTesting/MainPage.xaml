@@ -8,7 +8,28 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
-
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Margin="12,10,12,12">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Canvas Name="PrintCanvas" Opacity="0"/>
+            <StackPanel Margin="0,0,0,10">
+                <TextBlock Text="Description:" Style="{StaticResource SampleHeaderTextStyle}"/>
+                <TextBlock Style="{StaticResource ScenarioDescriptionTextStyle}" TextWrapping="Wrap">
+                    Apps can support an in-app print button to invoke the print experience via the print contact.
+                </TextBlock>
+            </StackPanel>
+            <ScrollViewer Grid.Row="1" VerticalScrollMode="Auto" VerticalScrollBarVisibility="Auto">
+                <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top">
+                    <Button Name="InvokePrintingButton" Content="Print" Click="OnPrintButtonClick"/>
+                </StackPanel>
+            </ScrollViewer>
+            
+            <!-- Status block for providing messages to the user.  Use the NotifyUser() method to populate the message -->
+            <TextBlock Name="StatusBlock" Grid.Row="2" Margin="12,10,12,10" Visibility="Collapsed"/>
+        </Grid>
     </Grid>
 </Page>
