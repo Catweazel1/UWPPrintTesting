@@ -233,5 +233,67 @@ namespace UWPPrintTesting.classes
             printDoc.AddPagesComplete();
         }
 
+        protected virtual RichTextBlockOverflow AddOnePrintPreviewPage(RichTextBlockOverflow lastRTBOAdded, PrintPageDescription printPageDescription)
+        {
+            // XAML element that is used to represent to "printing page"
+            FrameworkElement page;
+
+            // The link container for text overflowing in this page
+            RichTextBlockOverflow textLink;
+
+            // Check if this is the first page (no previous RichTextBlockOverflow)
+            if( lastRTBOAdded == null)
+            {
+                // If this is the first page add the specific scenario content
+                page = firstPage;
+
+                // Hide footer since we don't know yet if it will be displayed (this might not be the last page) - wait for layout
+                StackPanel footer = (StackPanel)page.FindName("Footer");
+                footer.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+            }
+            else
+            {
+                // Flow content (text) from previous pages
+                page = new ContinuationPage(lastRTBOAdded);
+            }
+
+            // Set "paper" width
+            page.Width = printPageDescription.PageSize.Width;
+            page.Height = printPageDescription.PageSize.Height;
+
+            Grid printableArea = (Grid)page.FindName("PrintableArea");
+
+            // Get the margins size
+            // If the ImageableRect is smaller than the app provided margins use the ImageableRect
+            double marginWidth = Math.Max(printPageDescription.PageSize.Width - printPageDescription.ImageableRect.Width, printPageDescription.PageSize.Width * ApplicationContentMarginLeft * 2);
+            double marginHeight = Math.Max(printPageDescription.PageSize.Height - printPageDescription.ImageableRect.Height, printPageDescription.PageSize.Height * ApplicationContentMargintop * 2);
+
+            // Set-up "printable area" on the "paper"
+            printableArea.Width = firstPage.Width - marginWidth;
+            printableArea.Height = firstPage.Height - marginHeight;
+
+            // Add the (newly created) page to the print canvas which is part of the visual tree and force it to go
+            // through the layout so that the linked containers correctly distribute the content inside them.
+            PrintCanvas.Children.Add(page);
+            PrintCanvas.InvalidateMeasure();
+            PrintCanvas.UpdateLayout();
+
+            // Find the last text container and see if the content is overflowing
+            textLink = (RichTextBlockOverflow)page.FindName("ContinuationPageLinkedContainer");
+
+            // Check if this is the last page
+            if(!textLink.HasOverflowContent && textLink.Visibility == Windows.UI.Xaml.Visibility.Visible)
+            {
+                StackPanel footer = (StackPanel)page.FindName("Footer");
+                footer.Visibility = Windows.UI.Xaml.Visibility.Visible;
+                PrintCanvas.UpdateLayout();
+            }
+
+            // Add the page to the page preview collection
+            printPreviewPages.Add(page);
+
+            return textLink;
+        }
+
     }
 }
