@@ -95,7 +95,7 @@ namespace UWPPrintTesting.classes
         /// </summary>
         public virtual void UnregisterForPrinting()
         {
-            if(printDocument == null)
+            if (printDocument == null)
             {
                 return;
             }
@@ -186,7 +186,7 @@ namespace UWPPrintTesting.classes
                     lastRTBOOnPage = AddOnePrintPreviewPage(lastRTBOOnPage, pageDescription);
                 }
 
-                if(PreviewPagesCreated != null)
+                if (PreviewPagesCreated != null)
                 {
                     PreviewPagesCreated.Invoke(printPreviewPages, null);
                 }
@@ -197,5 +197,41 @@ namespace UWPPrintTesting.classes
                 printDoc.SetPreviewPageCount(printPreviewPages.Count, PreviewPageCountType.Intermediate);
             }
         }
+
+        /// <summary>
+        /// This is the event handler for PrintDocument.GetPrintPreviewPage.  It provides a specific print preview page,
+        /// in the form of an UIElement, to an instance of PrintDocument.  PrintDocument subsequently converts the UIElement
+        /// into a page that the Windows print system can deal with.
+        /// </summary>
+        /// <param name="sender">PrintDocument</param>
+        /// <param name="e">Arguments containting the preview requested page</param>
+		protected virtual void GetPrintPreviewPage(object sender, GetPreviewPageEventArgs e)
+        {
+            PrintDocument printDoc = (PrintDocument)sender;
+            printDoc.SetPreviewPage(e.PageNumber, printPreviewPages[e.PageNumber - 1]);
+        }
+
+        /// <summary>
+        /// This is the event handler for PrintDocument.AddPages.  It provides all pages to be printed, in the form of
+        /// UIElements, to an instance of PrintDocument.  PrintDocument subsequently converts the UIElements
+        /// into pages that the Windows print system can deal with.
+        /// </summary>
+        /// <param name="sender">PrintDocument</param>
+        /// <param name="e">Add page event arguments containing a print task options reference.</param>
+        protected virtual void AddPrintPages(object sender, AddPagesEventArgs e)
+        {
+            // Loop over all of the preview pages and add each one to add each page to be printed.
+            for (int i = 0; i < printPreviewPages.Count; i++)
+            {
+                // We should have all pages ready at this point ...
+                printDocument.AddPage(printPreviewPages[i]);
+            }
+
+            PrintDocument printDoc = (PrintDocument)sender;
+
+            // Indicate that all of the print pages have been provided
+            printDoc.AddPagesComplete();
+        }
+
     }
 }
