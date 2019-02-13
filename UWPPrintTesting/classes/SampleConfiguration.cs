@@ -10,7 +10,12 @@ namespace SDKTemplate
 
         List<Scenario> scenarios = new List<Scenario>
         {
-
+            new Scenario() { Title = "Basic", ClassType=typeof(Scenario1Basic)},
+            new Scenario() { Title = "Standard Options", ClassType = typeof(Scenario2StandardOptions)},
+            new Scenario() { Title = "Custom Options", ClassType = typeof(Scenario3CustomOptions)},
+            new Scenario() { Title = "Page Range", ClassType = typeof(Scenario4PageRange)},
+            new Scenario() { Title = "Photos", ClassType = typeof(Scenario5Photos)},
+            new Scenario() { Title = "Disable Preview", ClassType = typeof(Scenario6DisablePreview)}
         };
     }
 
