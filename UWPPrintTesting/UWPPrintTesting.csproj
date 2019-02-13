@@ -119,6 +119,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="classes\PageToPrint.cs" />
     <Compile Include="classes\PrintHelper.cs" />
     <Compile Include="classes\SampleConfiguration.cs" />
     <Compile Include="MainPage.xaml.cs">
