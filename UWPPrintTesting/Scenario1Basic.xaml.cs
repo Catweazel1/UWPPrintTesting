@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using SDKTemplate;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -9,26 +7,26 @@ using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Printing;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Windows.Graphics.Printing;
+using SDKTemplate;
 
-// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
+// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
 namespace UWPPrintTesting
 {
     /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
+    /// Scenario that demonstrates how to invoke the Print UI
     /// </summary>
-    public sealed partial class MainPage : Page
+    public sealed partial class Scenario1Basic : Page
     {
         private PrintHelper printHelper;
 
-        public MainPage()
+        public Scenario1Basic()
         {
             this.InitializeComponent();
         }
@@ -50,7 +48,7 @@ namespace UWPPrintTesting
                 // Remove the print button
                 InvokePrintingButton.Visibility = Visibility.Collapsed;
 
-                // Inform user that Printing is not supported
+                // Inform the user that printing is not supported
                 MainPage.Current.NotifyUser("Printing is not supported.", NotifyType.ErrorMessage);
 
                 // Printing-related event handlers will never be called if printing
